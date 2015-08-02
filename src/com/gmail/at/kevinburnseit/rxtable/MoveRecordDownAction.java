@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Action for moving a record down in a table.
+ * @author Kevin J. Burns
+ *
+ */
 public class MoveRecordDownAction extends EasyTableWidgetAction {
 	/**
 	 * 

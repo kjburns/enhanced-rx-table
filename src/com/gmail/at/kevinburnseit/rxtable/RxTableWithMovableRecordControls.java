@@ -150,11 +150,29 @@ public class RxTableWithMovableRecordControls
 		/**
 		 * This action <u>performs</u> a change on the data model. No external code is
 		 * necessary to complete the change.
-		 * When invoked, the selected record is moved to the top (beginning) of the list.
+		 * When invoked, the selected record is moved to the top (beginning) of the
+		 * list--that is, its new index is zero. 
 		 */
 		MOVE_RECORD_TO_TOP,
+		/**
+		 * This action <u>performs</u> a change on the data model. No external code is
+		 * necessary to complete the change.
+		 * When invoked, the selected record is moved up one slot in the index--that is,
+		 * its index is reduced by one.
+		 */
 		MOVE_RECORD_UP,
+		/**
+		 * This action <u>performs</u> a change on the data model. No external code is
+		 * necessary to complete the change.
+		 * When invoked, the selected record is moved down one slot in the index--that
+		 * is, its index is increased by one.
+		 */
 		MOVE_RECORD_DOWN,
+		/**
+		 * This action <u>performs</u> a change on the data model. No external code is
+		 * necessary to complete the change.
+		 * When invoked, the selected record is moved to the bottom (end) of the list.
+		 */
 		MOVE_RECORD_TO_BOTTOM;
 	}
 	
@@ -184,6 +202,9 @@ public class RxTableWithMovableRecordControls
 	private JScrollPane scrollPane;
 	private String buttonsLocation = BorderLayout.SOUTH;
 	private TableModelType model;
+	/**
+	 * This is the distance between the table's scroll pane and the buttons bar.
+	 */
 	protected int componentGap = 5;
 	private JPanel buttonsPanel;
 	
@@ -488,27 +509,12 @@ public class RxTableWithMovableRecordControls
 		for (TableActionEnum action : TableActionEnum.values()) {
 			this.actions.get(action).checkEnabled();
 		}
-//		int record = getSelectedRecord();
-//		int recordCount = model.getRowCount();
-//		
-//		boolean canMoveUp = (record >= 1);
-//		TableActionEnum[] upActions = 
-//			{TableActionEnum.MOVE_RECORD_UP, TableActionEnum.MOVE_RECORD_TO_TOP};
-//		for (TableActionEnum ua : upActions) {
-//			actionButtons.get(ua).setEnabled(canMoveUp);
-//			actionMenus.get(ua).setEnabled(canMoveUp);
-//		}
-//		
-//		boolean canMoveDown = (record >= 0) && (record != (recordCount - 1));
-//		TableActionEnum[] downActions =
-//			{TableActionEnum.MOVE_RECORD_DOWN, 
-//			 TableActionEnum.MOVE_RECORD_TO_BOTTOM};
-//		for (TableActionEnum da : downActions) {
-//			actionButtons.get(da).setEnabled(canMoveDown);
-//			actionMenus.get(da).setEnabled(canMoveDown);
-//		}
 	}
 
+	/**
+	 * Returns the model backing the table in this widget.
+	 * @return
+	 */
 	public TableModelType getModel() {
 		return model;
 	}

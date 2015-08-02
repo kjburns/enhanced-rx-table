@@ -7,6 +7,13 @@ import javax.swing.JScrollPane;
 
 import com.gmail.at.kevinburnseit.rxtable.RxTableWithAddedRecords.AddRequestListener;
 
+/**
+ * The action that, when executed, signals to listeners that the user has requested
+ * that a record be added. For technical reasons, this class is not package-private; 
+ * however, it is probably not useful for anything other than this package.
+ * @author Kevin J. Burns
+ *
+ */
 public class AddRecordAction extends EasyTableAction {
 	/**
 	 * An event generated when the user calls the popup menu for the table and selects the
