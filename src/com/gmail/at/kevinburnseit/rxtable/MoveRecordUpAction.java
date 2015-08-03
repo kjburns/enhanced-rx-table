@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Action which moves a record one slot up in its list.
+ * @author Kevin J. Burns
+ *
+ */
 public class MoveRecordUpAction extends EasyTableWidgetAction {
 	/**
 	 * 

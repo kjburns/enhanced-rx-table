@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Action which move a record to the top of its list.
+ * @author Kevin J. Burns
+ *
+ */
 public class MoveRecordToTopAction extends EasyTableWidgetAction {
 	/**
 	 * 

@@ -51,6 +51,13 @@ import com.gmail.at.kevinburnseit.rxtable.RxTableWithAddedRecords.MenuItemEnable
  * That abstract class meets the parameterization requirements of this widget.- </li>
  * </ul>
  * <p>
+ * Additionally, this widget automatically sets the selection mode to
+ * {@link ListSelectionModel#SINGLE_SELECTION} because currently the widget is not set
+ * up to perform the record manipulation functions on a selection which contains multiple
+ * records. For that reason, it is <u>strongly</u> recommended that you leave this
+ * setting alone.
+ * </p>
+ * <p>
  * This class provides several constructors which are similar to those of JTable:
  * </p>
  * <ul>
@@ -254,6 +261,9 @@ public class RxTableWithMovableRecordControls
 	}
 	
 	private void finishConstructing() {
+		this.table.getSelectionModel().setSelectionMode(
+				ListSelectionModel.SINGLE_SELECTION);
+		
 		BorderLayout layout = new BorderLayout(this.componentGap, this.componentGap);
 		this.setLayout(layout);
 		

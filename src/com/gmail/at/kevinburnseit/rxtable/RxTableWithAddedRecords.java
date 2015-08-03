@@ -79,6 +79,12 @@ public class RxTableWithAddedRecords extends RXTable {
 	public static interface RemoveRequestListener {
 		void removeRequested(RemoveRecordAction.RemoveRequestedEvent e);
 	}
+	/**
+	 * A listener for record add requests. The record is not actually added; adding a
+	 * record is left to the listener code. Therefore, veto capability is left to the user.
+	 * @author Kevin J. Burns
+	 *
+	 */
 	public static interface AddRequestListener {
 		void addRequested(AddRecordAction.AddRequestedEvent e);
 	}
@@ -86,7 +92,13 @@ public class RxTableWithAddedRecords extends RXTable {
 	private JPopupMenu popup;
 	private JMenuItem addItem;
 	private JMenuItem removeItem;
+	/**
+	 * List which contains remove request listeners.
+	 */
 	ArrayList<RemoveRequestListener> removeListeners = new ArrayList<>();
+	/**
+	 * List which contains add request listeners.
+	 */
 	ArrayList<AddRequestListener> addListeners = new ArrayList<>();
 	private HashMap<JMenuItem, MenuItemEnableListener> menuItemMap = new HashMap<>();
 	private JScrollPane scrollPane = null;
@@ -97,10 +109,20 @@ public class RxTableWithAddedRecords extends RXTable {
 	private AddRecordAction addAction;
 	private RemoveRecordAction removeAction;
 	
+	/**
+	 * Fetches the action which, when executed, requests that a record be added to the
+	 * table.
+	 * @return
+	 */
 	AddRecordAction getAddAction() {
 		return addAction;
 	}
 
+	/**
+	 * Fetches the action which, when executed, requests that a record be removed from
+	 * the table.
+	 * @return
+	 */
 	RemoveRecordAction getRemoveAction() {
 		return removeAction;
 	}
@@ -389,18 +411,37 @@ public class RxTableWithAddedRecords extends RXTable {
 		}
 	}
 
+	/**
+	 * Returns the menu item for adding a record.
+	 * @return
+	 */
 	JMenuItem getAddMenu() {
 		return this.addItem;
 	}
 
+	/**
+	 * Returns the menu item for removing a record.
+	 * @return
+	 */
 	JMenuItem getRemoveMenu() {
 		return this.removeItem;
 	}
 
+	/**
+	 * Returns the row which was clicked last time the user invoked the popup menu, if
+	 * known. If the right-click occurred somewhere other than a table record (in the
+	 * scroll pane, for example), or if the table has intentionally forgotten which row
+	 * was clicked last time, -1 is returned.
+	 * @return
+	 */
 	public int getRowClicked() {
 		return rowClicked;
 	}
 	
+	/**
+	 * Sets the table's selection interval to be equal to the specified record.
+	 * @param record The record to be selected, or -1 to select none.
+	 */
 	void setSelection(int record) {
 		if (record < 0) record = -1;
 		if (record >= this.getModel().getRowCount()) record = -1;
@@ -412,6 +453,14 @@ public class RxTableWithAddedRecords extends RXTable {
 		else lsm.setSelectionInterval(record, record);
 	}
 
+	/**
+	 * For a record manipulation action which could be performed on this table, this
+	 * function fetches the record number which would be affected by such an action.
+	 * First, it looks to see if a popup invocation is remembered; if so, it returns
+	 * that record number. Otherwise, it returns the record number which is currently
+	 * selected. If there is no record selected, the function returns -1.
+	 * @return
+	 */
 	public int getAffectedRow() {
 		if (this.rowClicked != -1) return this.rowClicked;
 		return this.selectionModel.getMinSelectionIndex();

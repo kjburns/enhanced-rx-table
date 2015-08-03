@@ -2,6 +2,13 @@ package com.gmail.at.kevinburnseit.collections;
 
 import java.util.ArrayList;
 
+/**
+ * A subclass of ArrayList which provides for the reordering of records by implementing
+ * {@link CollectionReorderable}.
+ * @author Kevin J. Burns
+ *
+ * @param <T> the type of object stored in the list.
+ */
 public class ArrayListReorderable<T> extends ArrayList<T>
 		implements CollectionReorderable {
 	/**

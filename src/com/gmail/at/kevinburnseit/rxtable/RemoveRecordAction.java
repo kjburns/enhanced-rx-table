@@ -6,6 +6,12 @@ import javax.swing.ImageIcon;
 
 import com.gmail.at.kevinburnseit.rxtable.RxTableWithAddedRecords.RemoveRequestListener;
 
+/**
+ * Action which, when executed, alerts an external listener that the user has requested that
+ * the selected record be deleted.
+ * @author Kevin J. Burns
+ *
+ */
 public class RemoveRecordAction extends EasyTableAction {
 	/**
 	 * An event generated when the user calls the popup menu for the table and selects the

@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Action which moves a record to the bottom of the list.
+ * @author Kevin J. Burns
+ *
+ */
 public class MoveRecordToBottomAction extends EasyTableWidgetAction {
 	/**
 	 * 

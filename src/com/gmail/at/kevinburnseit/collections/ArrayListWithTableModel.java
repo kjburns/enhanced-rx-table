@@ -7,6 +7,17 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+/**
+ * This abstract class extends the capability of an ArrayList by adding record reordering
+ * functionality and providing the skeleton implementation of a TableModel. This class
+ * fulfills the collection requirements for 
+ * {@link com.gmail.at.kevinburnseit.collections.RxTableWithMovableRecordControls}.
+ * Derived classes must provide the implementation-specific details for the TableModel.
+ * 
+ * @author Kevin J. Burns
+ *
+ * @param <T> The object type stored in the collection.
+ */
 public abstract class ArrayListWithTableModel<T> extends ArrayListReorderable<T> 
 	implements TableModel {
 
@@ -16,20 +27,30 @@ public abstract class ArrayListWithTableModel<T> extends ArrayListReorderable<T>
 	private static final long serialVersionUID = 8418021814359679096L;
 	private ArrayList<TableModelListener> listeners = new ArrayList<>();
 
+	/**
+	 * Constructor. The contents of this collection will be identical to an ArrayList
+	 * instantiated with its empty constructor.
+	 */
 	public ArrayListWithTableModel() {
 		super();
 	}
 
+	@Override
 	public abstract void setValueAt(Object newValue, int row, int column);
 
+	@Override
 	public abstract boolean isCellEditable(int row, int column);
 
+	@Override
 	public abstract Object getValueAt(int row, int column);
 
+	@Override
 	public abstract String getColumnName(int column);
 
+	@Override
 	public abstract int getColumnCount();
 
+	@Override
 	public abstract Class<?> getColumnClass(int columnNumber);
 
 	@Override
@@ -54,7 +75,11 @@ public abstract class ArrayListWithTableModel<T> extends ArrayListReorderable<T>
 		this.dispatchEvent(ev);
 	}
 
-	protected void dispatchEvent(TableModelEvent ev) {
+	/**
+	 * Notifies all table model listeners of a TableModelEvent.
+	 * @param ev The event to dispatch
+	 */
+	protected final void dispatchEvent(TableModelEvent ev) {
 		for (TableModelListener l : this.listeners) {
 			l.tableChanged(ev);
 		}
