@@ -371,8 +371,10 @@ public class RxTableWithMovableRecordControls
 	/**
 	 * Changes the model associated with this table. This function should be used rather than
 	 * calling getTable().setModel(...) because in order for the rearrangement functionality
-	 * to work the model must also extend {@link CollectionReorderable}. 
-	 * @param model Model to assign to table
+	 * to work the model must also extend {@link CollectionReorderable}.
+	 * @param model Model to assign to table. This function indirectly calls 
+	 * JTable::setModel(...), so if you pass <code>null</code> in this parameter, you
+	 * can expect an IllegalArgumentException.
 	 */
 	public void setTableModel(TableModelType model) {
 		TableModel oldModel = this.table.getModel();
