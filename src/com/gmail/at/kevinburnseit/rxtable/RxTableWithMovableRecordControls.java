@@ -2,7 +2,6 @@ package com.gmail.at.kevinburnseit.rxtable;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -10,6 +9,7 @@ import java.util.HashMap;
 
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
@@ -273,7 +273,8 @@ public class RxTableWithMovableRecordControls
 		this.add(this.scrollPane, BorderLayout.CENTER);
 		
 		this.buttonsPanel = new JPanel();
-		FlowLayout btnLayout = new FlowLayout(FlowLayout.LEADING, 0, 0);
+		//FlowLayout btnLayout = new FlowLayout(FlowLayout.LEADING, 0, 0);
+		BoxLayout btnLayout = new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS);
 		this.buttonsPanel.setLayout(btnLayout);
 		
 		this.add(this.buttonsPanel, this.buttonsLocation);
@@ -432,9 +433,22 @@ public class RxTableWithMovableRecordControls
 		if (!found) return;
 		
 		this.remove(this.buttonsPanel);
+		int axis;
+		
+		if (loc.equals(BorderLayout.WEST) || loc.equals(BorderLayout.EAST)) {
+			axis = BoxLayout.PAGE_AXIS;
+		}
+		else axis = BoxLayout.LINE_AXIS;
+		
+		if (((BoxLayout)this.buttonsPanel.getLayout()).getAxis() != axis) {
+			BoxLayout layout = new BoxLayout(this.buttonsPanel, axis);
+			this.buttonsPanel.setLayout(layout);
+		}
 		
 		this.buttonsLocation = loc;
 		this.add(this.buttonsPanel, this.buttonsLocation);
+		
+		this.invalidate();
 	}
 
 	/**
