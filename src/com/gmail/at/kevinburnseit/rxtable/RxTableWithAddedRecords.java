@@ -102,8 +102,9 @@ public class RxTableWithAddedRecords extends RXTable {
 	ArrayList<AddRequestListener> addListeners = new ArrayList<>();
 	private HashMap<JMenuItem, MenuItemEnableListener> menuItemMap = new HashMap<>();
 	private JScrollPane scrollPane = null;
-	private int rowClicked;
+	private int rowClicked = -1;
 	private MouseAdapter scrollPaneMouseListener;
+	@SuppressWarnings("hiding")
 	private AccessibleRxTableWithAddedRecords accessibleContext = 
 			new AccessibleRxTableWithAddedRecords();
 	private AddRecordAction addAction;

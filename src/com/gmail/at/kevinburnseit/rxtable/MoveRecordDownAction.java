@@ -37,6 +37,8 @@ public class MoveRecordDownAction extends EasyTableWidgetAction {
 	@Override
 	protected boolean shouldBeEnabled() {
 		int record = this.table.getSelectedRow();
+		if (record == -1) return false;
+		
 		int count = this.table.getModel().getRowCount();
 
 		return (record < count - 1);

@@ -250,6 +250,19 @@ public class RxTableWithMovableRecordControls
 		this.finishConstructing();
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#setEnabled(boolean)
+	 * Overriden here so that the enabled state is passed to child elements.
+	 */
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		this.table.setEnabled(enabled);
+		for(EasyTableAction a : this.actions.values()) {
+			a.setEnabled(a.shouldBeEnabled() && enabled);
+		}
+	}
+
 	/**
 	 * See constructors for JTable.
 	 */
@@ -312,7 +325,7 @@ public class RxTableWithMovableRecordControls
 				this.actionMenus.get(TableActionEnum.MOVE_RECORD_TO_TOP), 
 				new MenuItemEnableListener() {
 			@Override
-			public boolean popupInvoked(RxTableWithAddedRecords table,
+			public boolean popupInvoked(RxTableWithAddedRecords table1,
 					int recordNumber, JMenuItem item) {
 				return (recordNumber > 0);
 			}
