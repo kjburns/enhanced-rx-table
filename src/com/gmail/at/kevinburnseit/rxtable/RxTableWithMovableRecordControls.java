@@ -2,6 +2,7 @@ package com.gmail.at.kevinburnseit.rxtable;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -350,7 +351,8 @@ public class RxTableWithMovableRecordControls
 		for (TableActionEnum act : TableActionEnum.values()) {
 			if (act.ordinal() == 2) {
 				// create rigid area between add/remove buttons and move buttons
-				Component rigidArea = Box.createHorizontalStrut(this.componentGap);
+				Component rigidArea = Box.createRigidArea(
+						new Dimension(this.componentGap, this.componentGap));
 				this.buttonsPanel.add(rigidArea);
 			}
 
