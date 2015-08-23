@@ -1,5 +1,6 @@
 package com.gmail.at.kevinburnseit.rxtable;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,6 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -35,6 +37,7 @@ import javax.swing.table.TableModel;
  * <li>Allows other code to register a scroll pane which contains this table, so that the popup
  * menu will appear when the user right-clicks outside the table. </li>
  * <li>Adds accessibility support </li>
+ * <li>Allows external functions to listen for start-edit/end-edit events</li>
  * </ul>
  * @author Kevin J. Burns
  * @version 1.0
@@ -45,6 +48,72 @@ public class RxTableWithAddedRecords extends RXTable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5004232123995633490L;
+	
+	/**
+	 * A listener which is alerted when the table starts or stops editing a cell.
+	 * @author Kevin J. Burns
+	 *
+	 */
+	public static interface CellEditStatusListener {
+		void cellEditStatusChanged(CellEditStatusEvent ev);
+	}
+	
+	/**
+	 * An event which describes the beginning or ending of cell editing.
+	 * @author Kevin J. Burns
+	 *
+	 */
+	public static class CellEditStatusEvent {
+		/**
+		 * Indicates that editing a cell is about to begin
+		 */
+		public static final int START_EDITING = 1;
+		/**
+		 * Indicates that editing a cell has stopped
+		 */
+		public static final int STOP_EDITING = 2;
+		RxTableWithAddedRecords table;
+		int row;
+		int column;
+		int event;
+		
+		public CellEditStatusEvent(RxTableWithAddedRecords table, int row, int column, 
+				int event) {
+			this.table = table;
+			this.row = row;
+			this.column = column;
+			this.event = event;
+		}
+
+		/**
+		 * @return the table
+		 */
+		public RxTableWithAddedRecords getTable() {
+			return table;
+		}
+
+		/**
+		 * @return the row
+		 */
+		public int getRow() {
+			return row;
+		}
+
+		/**
+		 * @return the column
+		 */
+		public int getColumn() {
+			return column;
+		}
+
+		/**
+		 * @return the event, which will either be
+		 * {@link #START_EDITING} or {@link #STOP_EDITING}.
+		 */
+		public int getEvent() {
+			return event;
+		}
+	}
 	
 	public class AccessibleRxTableWithAddedRecords extends AccessibleJTable {
 		/**
@@ -100,6 +169,7 @@ public class RxTableWithAddedRecords extends RXTable {
 	 * List which contains add request listeners.
 	 */
 	ArrayList<AddRequestListener> addListeners = new ArrayList<>();
+	private ArrayList<CellEditStatusListener> cellEditListeners = new ArrayList<>();
 	private HashMap<JMenuItem, MenuItemEnableListener> menuItemMap = new HashMap<>();
 	private JScrollPane scrollPane = null;
 	private int rowClicked = -1;
@@ -465,5 +535,51 @@ public class RxTableWithAddedRecords extends RXTable {
 	public int getAffectedRow() {
 		if (this.rowClicked != -1) return this.rowClicked;
 		return this.selectionModel.getMinSelectionIndex();
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.JTable#prepareEditor(javax.swing.table.TableCellEditor, int, int)
+	 */
+	@Override
+	public Component prepareEditor(TableCellEditor editor, int row, int column) {
+		CellEditStatusEvent ev = new CellEditStatusEvent(this, row, column, 
+				CellEditStatusEvent.START_EDITING);
+		for (CellEditStatusListener l : this.cellEditListeners) {
+			l.cellEditStatusChanged(ev);
+		}
+		return super.prepareEditor(editor, row, column);
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.JTable#removeEditor()
+	 */
+	@Override
+	public void removeEditor() {
+		super.removeEditor();
+
+		int row = this.editingRow;
+		int column = this.editingColumn;
+		
+		CellEditStatusEvent ev = new CellEditStatusEvent(this, row, column, 
+				CellEditStatusEvent.STOP_EDITING);
+		for (CellEditStatusListener l : this.cellEditListeners) {
+			l.cellEditStatusChanged(ev);
+		}
+	}
+	
+	/**
+	 * Adds a listener which will be notified when cell editing begins or ends.
+	 * @param l The listener to add
+	 */
+	public void addCellEditStatusListener(CellEditStatusListener l) {
+		this.cellEditListeners.add(l);
+	}
+	
+	/**
+	 * Removes an already-added cell edit listener.
+	 * @param l Listener to remove
+	 */
+	public void removeCellEditStatusListener(CellEditStatusListener l) {
+		this.cellEditListeners.remove(l);
 	}
 }
