@@ -26,6 +26,9 @@ public class MoveRecordToBottomAction extends EasyTableWidgetAction {
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		if (this.table.isEditing()) {
+			this.table.getCellEditor().stopCellEditing();
+		}
 		int record = this.table.getSelectedRow();
 		int count = this.table.getModel().getRowCount();
 		if (record >= count - 1) return;

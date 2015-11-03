@@ -61,6 +61,9 @@ public class AddRecordAction extends EasyTableAction {
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		if (this.table.isEditing()) {
+			this.table.getCellEditor().stopCellEditing();
+		}
 		AddRequestedEvent e = new AddRequestedEvent();
 		e.table = this.table;
 		e.record = this.table.getAffectedRow();

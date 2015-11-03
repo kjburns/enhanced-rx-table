@@ -26,6 +26,9 @@ public class MoveRecordToTopAction extends EasyTableWidgetAction {
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		if (this.table.isEditing()) {
+			this.table.getCellEditor().stopCellEditing();
+		}
 		int record = this.table.getSelectedRow();
 		if (record <= 0) return;
 		

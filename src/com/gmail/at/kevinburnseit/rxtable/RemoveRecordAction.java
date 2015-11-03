@@ -57,7 +57,11 @@ public class RemoveRecordAction extends EasyTableAction {
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		RemoveRecordAction.RemoveRequestedEvent e = new RemoveRecordAction.RemoveRequestedEvent();
+		if (this.table.isEditing()) {
+			this.table.getCellEditor().stopCellEditing();
+		}
+		RemoveRecordAction.RemoveRequestedEvent e = 
+				new RemoveRecordAction.RemoveRequestedEvent();
 		e.table = this.table;
 		e.record = this.table.getAffectedRow();
 		
