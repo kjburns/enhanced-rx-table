@@ -559,4 +559,13 @@ public class RxTableWithMovableRecordControls
 	public TableModelType getModel() {
 		return model;
 	}
+	
+	/**
+	 * Gets an action associated with this table
+	 * @param action An action enum value
+	 * @return The action if it exists; <code>null</code> otherwise.
+	 */
+	protected EasyTableAction getAction(TableActionEnum action) {
+		return this.actions.get(action);
+	}
 }
